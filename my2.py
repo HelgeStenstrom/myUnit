@@ -7,8 +7,12 @@ class TestCase:
         self.name = name
 
     def run(self):
+    	self.setUp()
     	method = getattr(self, self.name)
     	method()
+
+    def setUp(self):
+    	pass
  
 class WasRun(TestCase):
     def __init__(self, name):
@@ -19,10 +23,20 @@ class WasRun(TestCase):
     def testMethod(self):
     	self.wasRun = True
 
+    def setUp(self):
+    	self.wasRun = False
+    	self.wasSetUp = True
+
 # =====  Unit tests start here ==========
 
 class TestCaseTest(TestCase):
 	"""Testar mina test case"""
+
+	def testSetUp(self):
+		test = WasRun("testMethod")
+		test.run()
+		assert(test.wasSetUp)
+
 	def testRunning(self):
 		test = WasRun("testMethod")
 		assert(not test.wasRun)
@@ -32,3 +46,5 @@ class TestCaseTest(TestCase):
 
 
 TestCaseTest("testRunning").run()
+TestCaseTest("testSetUp").run()
+

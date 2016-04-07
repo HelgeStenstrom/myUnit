@@ -3,9 +3,13 @@
 # Från Kent Beck
 
 class TestCase:
-	def __init__(self, name):
-		self.name = name
+    def __init__(self, name):
+        self.name = name
 
+    def run(self):
+    	method = getattr(self, self.name)
+    	method()
+ 
 class WasRun(TestCase):
     def __init__(self, name):
     	self.wasRun = False
@@ -15,10 +19,7 @@ class WasRun(TestCase):
     def testMethod(self):
     	self.wasRun = True
 
-    def run(self):
-    	method = getattr(self, self.name)
-    	method()
-    	
+   	
 
 
 # =====  Unit tests start here ==========

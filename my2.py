@@ -19,13 +19,16 @@ class WasRun(TestCase):
     def testMethod(self):
     	self.wasRun = True
 
-   	
-
-
 # =====  Unit tests start here ==========
 
-test = WasRun("testMethod")
-print(test.wasRun)
-test.run()
-print(test.wasRun)
+class TestCaseTest(TestCase):
+	"""Testar mina test case"""
+	def testRunning(self):
+		test = WasRun("testMethod")
+		assert(not test.wasRun)
+		test.run()
+		assert(test.wasRun)
 
+
+
+TestCaseTest("testRunning").run()

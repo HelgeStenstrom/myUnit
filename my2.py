@@ -8,13 +8,17 @@ class WasRun:
 
     def testMethod(self):
     	self.wasRun = True
+
+    def run(self):
+    	self.testMethod()
     	
 
 
 
-# Unit tests start here
+# =====  Unit tests start here ==========
+
 test = WasRun("testMethod")
 print(test.wasRun)
-test.testMethod()
+test.run()
 print(test.wasRun)
 

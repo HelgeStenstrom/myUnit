@@ -2,7 +2,10 @@
 
 # Från Kent Beck
 
-class WasRun:
+class TestCase:
+	pass
+
+class WasRun(TestCase):
     def __init__(self, name):
     	self.wasRun = False
     	self.name = name
@@ -14,7 +17,6 @@ class WasRun:
     	method = getattr(self, self.name)
     	method()
     	
-
 
 
 # =====  Unit tests start here ==========

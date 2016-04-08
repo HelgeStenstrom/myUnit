@@ -11,7 +11,7 @@ class TestCase:
         method = getattr(self, self.name)
         method()
 
- 
+
 class WasRun(TestCase):
     def __init__(self, name):
         TestCase.__init__(self, name)
@@ -24,6 +24,7 @@ class WasRun(TestCase):
         self.wasRun = False
         self.wasSetUp = True
 
+
 # =====  Unit tests start here ==========
 
 class TestCaseTest(TestCase):
@@ -33,14 +34,12 @@ class TestCaseTest(TestCase):
         self.test = WasRun("testMethod")
 
     def testSetUp(self):
-        test = WasRun("testMethod")
-        test.run()
-        assert(test.wasSetUp)
+        self.test.run()
+        assert(self.test.wasSetUp)
 
     def testRunning(self):
-        test = WasRun("testMethod")
-        test.run()
-        assert(test.wasRun)
+        self.test.run()
+        assert(self.test.wasRun)
 
 
 

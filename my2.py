@@ -11,8 +11,6 @@ class TestCase:
         method = getattr(self, self.name)
         method()
 
-    def setUp(self):
-        pass
  
 class WasRun(TestCase):
     def __init__(self, name):
@@ -30,6 +28,9 @@ class WasRun(TestCase):
 
 class TestCaseTest(TestCase):
     """Testar mina test case"""
+
+    def setUp(self):
+        self.test = WasRun("testMethod")
 
     def testSetUp(self):
         test = WasRun("testMethod")

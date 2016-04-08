@@ -19,10 +19,11 @@ class WasRun(TestCase):
 
     def testMethod(self):
         self.wasRun = True
+        self.log += "testMethod "
 
     def setUp(self):
         self.wasRun = False
-        self.wasSetUp = True
+        self.log = "setUp "
 
 
 # =====  Unit tests start here ==========
@@ -35,7 +36,7 @@ class TestCaseTest(TestCase):
 
     def testSetUp(self):
         self.test.run()
-        assert(self.test.wasSetUp)
+        assert("setUp testMethod " == self.test.log)
 
     def testRunning(self):
         self.test.run()

@@ -12,6 +12,10 @@ class TestCase:
         method = getattr(self, self.name)
         method()
 
+    def fail(self, msg=None):
+        raise AssertionError(msg)
+
+
 
 class WasRun(TestCase):
     def __init__(self, name):
@@ -43,8 +47,29 @@ class TestCaseTest(TestCase):
         self.test.run()
         assert(self.test.wasRun)
 
+    def testFailNoMsg(self):
+        try:
+            self.fail()
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError
+
+    def testFailMsg(self):
+        try:
+            self.fail("argument")
+        except AssertionError as e:
+            if e.args[0] != "argument":
+                raise ValueError("fail(arg) hanterar inte argumentet rätt")
+        else:
+            raise AssertionError
+
+        
+
 
 
 TestCaseTest("testRunning").run()
 TestCaseTest("testSetUp").run()
-
+TestCaseTest("testFailNoMsg").run()
+TestCaseTest("testFailMsg").run()
+print("end of program")

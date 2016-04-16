@@ -3,17 +3,26 @@
 
 # Från Kent Beck
 
+
+import time
+
 class TestCase:
     def __init__(self, name):
         self.name = name
 
     def run(self):
         self.setUp()
+        self.start = time.time()
         method = getattr(self, self.name)
         method()
 
     def fail(self, msg=None):
         raise AssertionError(msg)
+
+    def assertFaster(self, maxTime):
+        elapsed  = time.time() - self.start
+        if elapsed > maxTime:
+            raise TimeoutError
 
 
 
@@ -64,6 +73,24 @@ class TestCaseTest(TestCase):
         else:
             raise AssertionError
 
+
+    def testAssertFaster_tooSlow(self):
+        time.sleep(0.2)
+        try:
+            self.assertFaster(0.1)
+        except TimeoutError:
+            pass
+        else:
+            self.fail("Did not catch too slow execution.")
+
+    def testAssertFaster_notTooSlow(self):
+        time.sleep(0)
+        try:
+            self.assertFaster(1)
+        except TimeoutError:
+            self.fail("Faulty assertion of slow running time")
+
+
         
 
 
@@ -72,4 +99,6 @@ TestCaseTest("testRunning").run()
 TestCaseTest("testSetUp").run()
 TestCaseTest("testFailNoMsg").run()
 TestCaseTest("testFailMsg").run()
+TestCaseTest("testAssertFaster_tooSlow").run()
+TestCaseTest("testAssertFaster_notTooSlow").run()
 print("end of program")

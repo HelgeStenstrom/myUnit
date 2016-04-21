@@ -6,6 +6,7 @@
 
 import time
 
+
 class TestCase:
     def __init__(self, name):
         self.name = name
@@ -23,7 +24,6 @@ class TestCase:
         elapsed  = time.time() - self.start
         if elapsed > maxTime:
             raise TimeoutError
-
 
 
 class WasRun(TestCase):
@@ -91,9 +91,7 @@ class TestCaseTest(TestCase):
             self.fail("Faulty assertion of slow running time")
 
 
-        
-
-
+# Lista test att köra
 
 TestCaseTest("testRunning").run()
 TestCaseTest("testSetUp").run()

@@ -1,10 +1,10 @@
 #! /usr/bin/env python3
-# -*- coding: utf-8 -*.
+# -*- coding: utf-8 -*-   Behövs egentligen inte, men vissa editorer gillar det.
 
 # Från Kent Beck
 
 
-import my2 
+import my2
 import time
 
 
@@ -52,15 +52,23 @@ class TestCaseTest(my2.TestCase):
             self.fail("Did not catch too slow execution.")
 
     def test_AssertFaster_notTooSlow(self):
-        time.sleep(0)
+        time.sleep(0.01)
         try:
-            self.assertFaster(1)
+            self.assertFaster(0.1)
         except TimeoutError:
             self.fail("Faulty assertion of slow running time")
 
 
     def test_AssertTrue(self):
-        raise Exception
+        "assertTrue should raise an Exception if not True"
+        self.assertTrue(True)
+        try:
+            self.assertTrue(False)
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError
+
 
 
 
@@ -70,4 +78,5 @@ TestCaseTest("testFailNoMsg").run()
 TestCaseTest("testFailMsg").run()
 TestCaseTest("test_AssertFaster_tooSlow").run()
 TestCaseTest("test_AssertFaster_notTooSlow").run()
+TestCaseTest("test_AssertTrue").run()
 print("end of program")

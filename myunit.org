@@ -1,0 +1,4 @@
+* TODO self.assertSomething skapar inte exceptions
+- Python unittest loggar på något sätt om ett assertSomehting har uppfyllts eller inte.
+- När en assertX inte har uppfyllts, har testet misslyckats, vilket loggas.
+- 

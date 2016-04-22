@@ -12,6 +12,9 @@ class TestCase:
         self.name = name
         self.start = None
 
+    def setUp(self):
+        pass
+
     def run(self):
         self.setUp()
         self.start = time.time()

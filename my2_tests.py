@@ -11,32 +11,15 @@ import time
 # =====  Unit tests start here ==========
 
 class WasRun(my2.TestCase):
-    def q__init__(self, name):
-        TestCase.__init__(self, name)
-
 
     def testMethod(self):
         self.wasRun = True
         self.log += "testMethod "
 
     def setUp(self):
+        self.test = WasRun("testMethod")
         self.wasRun = False
         self.log = "setUp "
-
-    def testSetUp(self):
-        self.test.run()
-        assert("setUp testMethod " == self.test.log)
-
-
-
-
-
-
-class TestCaseTest(my2.TestCase):
-    """Testar mina test case"""
-
-    def setUp(self):
-        self.test = WasRun("testMethod")
 
     def testSetUp(self):
         self.test.run()
@@ -45,6 +28,10 @@ class TestCaseTest(my2.TestCase):
     def testRunning(self):
         self.test.run()
         assert(self.test.wasRun)
+
+
+class TestCaseTest(my2.TestCase):
+    """Testar mina test case"""
 
     def testFailNoMsg(self):
         try:
@@ -92,12 +79,13 @@ class TestCaseTest(my2.TestCase):
             raise AssertionError
 
 
-TestCaseTest("testRunning").run()
-TestCaseTest("testSetUp").run()
-#WasRun("testSetUp").run()
+WasRun("testRunning").run()
+WasRun("testSetUp").run()
+
 TestCaseTest("testFailNoMsg").run()
 TestCaseTest("testFailMsg").run()
 TestCaseTest("test_AssertFaster_tooSlow").run()
 TestCaseTest("test_AssertFaster_notTooSlow").run()
 TestCaseTest("test_AssertTrue").run()
+
 print("end of program")

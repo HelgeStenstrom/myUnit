@@ -1,4 +1,7 @@
 * TODO self.assertSomething skapar inte exceptions
+- utan loggar resultatet 
 - Python unittest loggar på något sätt om ett assertSomehting har uppfyllts eller inte.
 - När en assertX inte har uppfyllts, har testet misslyckats, vilket loggas.
-- 
+* TODO testSomething(self) vet sin doc-string
+- När testerna körs, får man en logg från dessa doc-strings, och om testerna fick Fail eller Pass. 
+

@@ -34,17 +34,4 @@ class TestCase:
             raise AssertionError
 
 
-# class WasRun(TestCase):
-#     def q__init__(self, name):
-#         TestCase.__init__(self, name)
-
-
-#     def testMethod(self):
-#         self.wasRun = True
-#         self.log += "testMethod "
-
-#     def setUp(self):
-#         self.wasRun = False
-#         self.log = "setUp "
-
 

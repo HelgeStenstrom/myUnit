@@ -29,6 +29,23 @@ class WasRun(my2.TestCase):
         self.test.run()
         assert(self.test.wasRun)
 
+class ResultTests(my2.TestCase):
+    """Testar mina test case"""
+
+    def setUp(self):
+        pass
+
+    def test_init(self):
+        result = my2.TestResult()
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 0)
+        self.assertEqual(result.shouldStop, False)
+        
+
+    # Hur ska jag testa att det finns ett resultat efter körningen?
+    # Det skapas ju efter att testSomething() har körts!
 
 class TestCaseTest(my2.TestCase):
     """Testar mina test case"""
@@ -51,6 +68,21 @@ class TestCaseTest(my2.TestCase):
             raise AssertionError
 
 
+
+
+
+
+class AssertTests(my2.TestCase):
+    def test_AssertTrue(self):
+        "assertTrue should raise an Exception if not True"
+        self.assertTrue(True)
+        try:
+            self.assertTrue(False)
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError
+
     def test_AssertFaster_tooSlow(self):
         time.sleep(0.2)
         try:
@@ -67,16 +99,17 @@ class TestCaseTest(my2.TestCase):
         except TimeoutError:
             self.fail("Faulty assertion of slow running time")
 
-
-    def test_AssertTrue(self):
-        "assertTrue should raise an Exception if not True"
-        self.assertTrue(True)
+    def test_AssertEqual(self):
         try:
-            self.assertTrue(False)
+            self.assertEqual(3, 4)
         except AssertionError:
             pass
         else:
             raise AssertionError
+
+        self.assertEqual(3, 3)
+        self.assertEqual('a', 'a')
+        self.assertEqual(AssertTests, AssertTests)
 
 
 WasRun("testRunning").run()
@@ -84,8 +117,13 @@ WasRun("testSetUp").run()
 
 TestCaseTest("testFailNoMsg").run()
 TestCaseTest("testFailMsg").run()
-TestCaseTest("test_AssertFaster_tooSlow").run()
-TestCaseTest("test_AssertFaster_notTooSlow").run()
-TestCaseTest("test_AssertTrue").run()
+
+AssertTests("test_AssertFaster_tooSlow").run()
+AssertTests("test_AssertFaster_notTooSlow").run()
+AssertTests("test_AssertTrue").run()
+AssertTests("test_AssertEqual").run()
+
+
+ResultTests("test_init").run()
 
 print("end of program")

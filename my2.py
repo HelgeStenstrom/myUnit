@@ -6,6 +6,18 @@
 
 import time
 
+class TestResult(object):
+
+    def __init__(self):
+        self.errors = []
+        self.failures = []
+        self.testsRun = 0
+        self.shouldStop = False
+
+    def wasSuccessful(self):
+        return True
+
+
 
 class TestCase:
     def __init__(self, name):
@@ -29,9 +41,10 @@ class TestCase:
         if elapsed > maxTime:
             raise TimeoutError
 
-    def assertTrue(self, bool):
-        if not bool:
+    def assertTrue(self, maybeTrue):
+        if not maybeTrue:
             raise AssertionError
 
-
-
+    def assertEqual(self, a, b, msg=None):
+        if a != b:
+            raise AssertionError

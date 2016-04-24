@@ -1,3 +1,5 @@
+* TODO Resultat lagras i instans av Result
+- per instans av TestCase
 * TODO self.assertSomething skapar inte exceptions
 - utan loggar resultatet 
 - Python unittest loggar på något sätt om ett assertSomehting har uppfyllts eller inte.

@@ -4,13 +4,13 @@
 # Från Kent Beck
 
 
-import my2
+import my2 as unittest
 import time
 
 
 # =====  Unit tests start here ==========
 
-class WasRun(my2.TestCase):
+class WasRun(unittest.TestCase):
 
     def testMethod(self):
         self.wasRun = True
@@ -29,25 +29,7 @@ class WasRun(my2.TestCase):
         self.test.run()
         assert(self.test.wasRun)
 
-class ResultTests(my2.TestCase):
-    """Testar mina test case"""
-
-    def setUp(self):
-        pass
-
-    def test_init(self):
-        result = my2.TestResult()
-        self.assertTrue(result.wasSuccessful())
-        self.assertEqual(len(result.errors), 0)
-        self.assertEqual(len(result.failures), 0)
-        self.assertEqual(result.testsRun, 0)
-        self.assertEqual(result.shouldStop, False)
-        
-
-    # Hur ska jag testa att det finns ett resultat efter körningen?
-    # Det skapas ju efter att testSomething() har körts!
-
-class TestCaseTest(my2.TestCase):
+class TestCaseTest(unittest.TestCase):
     """Testar mina test case"""
 
     def testFailNoMsg(self):
@@ -67,12 +49,7 @@ class TestCaseTest(my2.TestCase):
         else:
             raise AssertionError
 
-
-
-
-
-
-class AssertTests(my2.TestCase):
+class AssertTests(unittest.TestCase):
     def test_AssertTrue(self):
         "assertTrue should raise an Exception if not True"
         self.assertTrue(True)
@@ -110,6 +87,92 @@ class AssertTests(my2.TestCase):
         self.assertEqual(3, 3)
         self.assertEqual('a', 'a')
         self.assertEqual(AssertTests, AssertTests)
+
+
+class ResultTests(unittest.TestCase):
+    """Testar mina test case"""
+
+    def setUp(self):
+        pass
+
+    def test_init(self):
+        result = unittest.TestResult()
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 0)
+        self.assertEqual(result.shouldStop, False)
+
+    # "This method can be called to signal that the set of tests being
+    # run should be aborted by setting the TestResult's shouldStop
+    # attribute to True."
+    def test_stop(self):
+        result = unittest.TestResult()
+
+        result.stop()
+
+        self.assertEqual(result.shouldStop, True)
+
+    # "Called when the test case test is about to be run. The default
+    # implementation simply increments the instance's testsRun counter."
+    def test_startTest(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                pass
+
+        test = Foo('test_1')
+
+        result = unittest.TestResult()
+
+        result.startTest(test)
+
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+        result.stopTest(test)
+
+    # "Called after the test case test has been executed, regardless of
+    # the outcome. The default implementation does nothing."
+    def test_stopTest(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                pass
+
+        test = Foo('test_1')
+
+        result = unittest.TestResult()
+
+        result.startTest(test)
+
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+        result.stopTest(test)
+
+        # Same tests as above; make sure nothing has changed
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+    # "Called before and after tests are run. The default implementation does nothing."
+    def test_startTestRun_stopTestRun(self):
+        result = unittest.TestResult()
+        result.startTestRun()
+        result.stopTestRun()
+
+
+
+
+    # Hur ska jag testa att det finns ett resultat efter körningen?
+    # Det skapas ju efter att testSomething() har körts!
 
 
 WasRun("testRunning").run()

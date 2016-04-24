@@ -188,5 +188,9 @@ AssertTests("test_AssertEqual").run()
 
 
 ResultTests("test_init").run()
+ResultTests("test_stop").run()
+ResultTests("test_startTest").run()
+ResultTests("test_stopTest").run()
+ResultTests("test_startTestRun_stopTestRun").run()
 
 print("end of program")

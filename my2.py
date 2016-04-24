@@ -17,6 +17,14 @@ class TestResult(object):
     def wasSuccessful(self):
         return True
 
+    def stop(self):
+        self.shouldStop = True
+
+    def startTest(self, test):
+        self.testsRun += 1
+
+    def stopTest(self, test):
+        self.shouldStop = True
 
 
 class TestCase:

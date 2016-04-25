@@ -24,8 +24,16 @@ class TestResult(object):
         self.testsRun += 1
 
     def stopTest(self, test):
-        self.shouldStop = True
+        pass
 
+    def startTestRun(self):
+        pass
+
+    def stopTestRun(self):
+        pass
+
+    def addSuccess(self, test):
+        pass
 
 class TestCase:
     def __init__(self, name):

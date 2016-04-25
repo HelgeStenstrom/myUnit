@@ -169,6 +169,45 @@ class ResultTests(unittest.TestCase):
         result.stopTestRun()
 
 
+    # "addSuccess(test)"
+    # ...
+    # "Called when the test case test succeeds"
+    # ...
+    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # otherwise returns False"
+    # ...
+    # "testsRun - The total number of tests run so far."
+    # ...
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
+    # unexpected exception. Contains formatted
+    # tracebacks instead of sys.exc_info() results."
+    # ...
+    # "failures - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test where a failure was
+    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # methods. Contains formatted tracebacks instead
+    # of sys.exc_info() results."
+    def test_addSuccess(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                pass
+
+        test = Foo('test_1')
+
+        result = unittest.TestResult()
+
+        result.startTest(test)
+        result.addSuccess(test)
+        result.stopTest(test)
+
+        self.assertTrue(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+
 
 
     # Hur ska jag testa att det finns ett resultat efter körningen?
@@ -192,5 +231,6 @@ ResultTests("test_stop").run()
 ResultTests("test_startTest").run()
 ResultTests("test_stopTest").run()
 ResultTests("test_startTestRun_stopTestRun").run()
+ResultTests("test_addSuccess").run()
 
 print("end of program")

@@ -17,7 +17,7 @@ class WasRun(unittest.TestCase):
         self.log += "testMethod "
 
     def setUp(self):
-        self.test = WasRun("testMethod")
+        self.test = WasRun("testMethod") # skapar ett nytt WasRun-objekt, ägt av detta dito.
         self.wasRun = False
         self.log = "setUp "
 
@@ -333,6 +333,7 @@ class ResultTests(unittest.TestCase):
         self.assertEqual('A tracebacklocals', formatted_exc)
 
 
+WasRun("testMethod").run()              # Tillför inget.
 WasRun("testRunning").run()
 WasRun("testSetUp").run()
 

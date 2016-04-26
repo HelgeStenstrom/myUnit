@@ -15,7 +15,8 @@ class TestResult(object):
         self.shouldStop = False
 
     def wasSuccessful(self):
-        return len(self.failures) == 0
+        successful = len(self.failures) == 0 and len(self.errors) == 0
+        return successful
 
     def stop(self):
         self.shouldStop = True
@@ -40,7 +41,8 @@ class TestResult(object):
 
 
     def addError(self, test, exc_info_tuple):
-        pass
+        self.errors += [(test, exc_info_tuple)]
+
 
 class TestCase:
     def __init__(self, name):

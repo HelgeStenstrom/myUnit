@@ -6,7 +6,7 @@
 
 import my2 as unittest
 import time
-
+import sys
 
 # =====  Unit tests start here ==========
 
@@ -55,6 +55,16 @@ class AssertTests(unittest.TestCase):
         self.assertTrue(True)
         try:
             self.assertTrue(False)
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError
+
+    def test_AssertFalse(self):
+        "assertTrue should raise an Exception if not False"
+        self.assertFalse(False)
+        try:
+            self.assertFalse(True)
         except AssertionError:
             pass
         else:
@@ -208,10 +218,119 @@ class ResultTests(unittest.TestCase):
         self.assertEqual(result.shouldStop, False)
 
 
+    # "addFailure(test, err)"
+    # ...
+    # "Called when the test case test signals a failure. err is a tuple of
+    # the form returned by sys.exc_info(): (type, value, traceback)"
+    # ...
+    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # otherwise returns False"
+    # ...
+    # "testsRun - The total number of tests run so far."
+    # ...
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
+    # unexpected exception. Contains formatted
+    # tracebacks instead of sys.exc_info() results."
+    # ...
+    # "failures - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test where a failure was
+    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # methods. Contains formatted tracebacks instead
+    # of sys.exc_info() results."
+    def test_addFailure(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                pass
 
+        test = Foo('test_1')
+        try:
+            test.fail("foo")
+        except:
+            exc_info_tuple = sys.exc_info()
 
-    # Hur ska jag testa att det finns ett resultat efter körningen?
-    # Det skapas ju efter att testSomething() har körts!
+        result = unittest.TestResult()
+
+        result.startTest(test)
+        result.addFailure(test, exc_info_tuple)
+        result.stopTest(test)
+
+        self.assertFalse(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 0)
+        self.assertEqual(len(result.failures), 1)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+        test_case, formatted_exc = result.failures[0]
+        self.assertIs(test_case, test)
+        self.assertIsInstance(formatted_exc, str)
+
+    # "addError(test, err)"
+    # ...
+    # "Called when the test case test raises an unexpected exception err
+    # is a tuple of the form returned by sys.exc_info():
+    # (type, value, traceback)"
+    # ...
+    # "wasSuccessful() - Returns True if all tests run so far have passed,
+    # otherwise returns False"
+    # ...
+    # "testsRun - The total number of tests run so far."
+    # ...
+    # "errors - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test which raised an
+    # unexpected exception. Contains formatted
+    # tracebacks instead of sys.exc_info() results."
+    # ...
+    # "failures - A list containing 2-tuples of TestCase instances and
+    # formatted tracebacks. Each tuple represents a test where a failure was
+    # explicitly signalled using the TestCase.fail*() or TestCase.assert*()
+    # methods. Contains formatted tracebacks instead
+    # of sys.exc_info() results."
+    def test_addError(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                pass
+
+        test = Foo('test_1')
+        try:
+            raise TypeError()
+        except:
+            exc_info_tuple = sys.exc_info()
+
+        result = unittest.TestResult()
+
+        result.startTest(test)
+        result.addError(test, exc_info_tuple)
+        result.stopTest(test)
+
+        self.assertFalse(result.wasSuccessful())
+        self.assertEqual(len(result.errors), 1)
+        self.assertEqual(len(result.failures), 0)
+        self.assertEqual(result.testsRun, 1)
+        self.assertEqual(result.shouldStop, False)
+
+        test_case, formatted_exc = result.errors[0]
+        self.assertIs(test_case, test)
+        self.assertIsInstance(formatted_exc, str)
+
+    def test_addError_locals(self):
+        class Foo(unittest.TestCase):
+            def test_1(self):
+                1/0
+
+        test = Foo('test_1')
+        result = unittest.TestResult()
+        result.tb_locals = True
+
+        unittest.result.traceback = MockTraceback
+        self.addCleanup(restore_traceback)
+        result.startTestRun()
+        test.run(result)
+        result.stopTestRun()
+
+        self.assertEqual(len(result.errors), 1)
+        test_case, formatted_exc = result.errors[0]
+        self.assertEqual('A tracebacklocals', formatted_exc)
 
 
 WasRun("testRunning").run()
@@ -223,6 +342,7 @@ TestCaseTest("testFailMsg").run()
 AssertTests("test_AssertFaster_tooSlow").run()
 AssertTests("test_AssertFaster_notTooSlow").run()
 AssertTests("test_AssertTrue").run()
+AssertTests("test_AssertFalse").run()
 AssertTests("test_AssertEqual").run()
 
 
@@ -232,5 +352,8 @@ ResultTests("test_startTest").run()
 ResultTests("test_stopTest").run()
 ResultTests("test_startTestRun_stopTestRun").run()
 ResultTests("test_addSuccess").run()
+ResultTests("test_addFailure").run()
+ResultTests("test_addError").run()
+#ResultTests("test_addError_locals").run()
 
 print("end of program")

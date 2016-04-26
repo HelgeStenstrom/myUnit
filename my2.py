@@ -15,7 +15,7 @@ class TestResult(object):
         self.shouldStop = False
 
     def wasSuccessful(self):
-        return True
+        return len(self.failures) == 0
 
     def stop(self):
         self.shouldStop = True
@@ -33,6 +33,13 @@ class TestResult(object):
         pass
 
     def addSuccess(self, test):
+        pass
+
+    def addFailure(self, test, exc_info_tuple):
+        self.failures += [(test, exc_info_tuple)]
+
+
+    def addError(self, test, exc_info_tuple):
         pass
 
 class TestCase:
@@ -61,6 +68,17 @@ class TestCase:
         if not maybeTrue:
             raise AssertionError
 
+    def assertFalse(self, b):
+        if not b == False:
+            raise AssertionError
+
     def assertEqual(self, a, b, msg=None):
         if a != b:
             raise AssertionError
+
+    def assertIs(self, a, b):
+        pass
+
+    def assertIsInstance(self, a, b):
+        pass
+    

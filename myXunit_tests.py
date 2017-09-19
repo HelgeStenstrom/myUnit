@@ -1,49 +1,27 @@
-class WasRun:
+class TestCase:
+    def __init__(self, name):
+        self.name = name
+
+    def run(self):
+        method = getattr(self, self.name)
+        method()
+
+
+class WasRun(TestCase):
     def __init__(self, name):
         self.wasRun = None
+        super().__init__(name)
 
     def testMethod(self):
         self.wasRun = 1
-
-    def run(self):
-        self.testMethod()
-
-# -----------------------------------------
-
-def test_one():
-    # -------------- first unit test ----------
-    # Setup
-    test = WasRun("testMethod")
-
-    # Pre-condition test
-    print(test.wasRun)
-
-    # Exercise
-    test.testMethod()
-
-    # Assert
-    print(test.wasRun)
-    # -------------------------------------------
+        pass
 
 
-def test_two():
-    # -------------- second unit test ----------
-    # Setup
-    test = WasRun("testMethod")
+class TestCaseTest(TestCase):
+    def testRunning(self):
+        test = WasRun("testMethod")
+        assert(not test.wasRun)
+        test.run()
+        assert(test.wasRun)
 
-    # Pre-condition test
-    print(test.wasRun)
-    assert not (test.wasRun)
-
-    # Exercise
-    test.run()
-
-    # Assert
-    print(test.wasRun)
-    assert test.wasRun
-
-    # -------------------------------------------
-
-# test_one()
-test_two()
-
+TestCaseTest("testRunning").run()

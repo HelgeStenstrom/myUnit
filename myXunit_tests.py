@@ -12,6 +12,7 @@ class TestCase:
 
 
 class WasRun(TestCase):
+    # Denna klass är inte ett testfall, den är indata till SUT. Men den ser ut som ett testfall.
     def __init__(self, name):
         self.wasRun = None
         super().__init__(name)
